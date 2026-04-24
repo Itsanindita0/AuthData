@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import DashboardClient from "./DashboardClient";
 
 export default async function DashboardPage() {
-  const cookieStore = await cookies(); // ✅ IMPORTANT
+  const cookieStore = await cookies(); 
   const token = cookieStore.get("token")?.value;
 
   if (!token) {

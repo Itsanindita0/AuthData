@@ -10,12 +10,12 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/login") ||
     pathname.startsWith("/register");
 
-  //  Not logged in → block dashboard
+  
   if (!token && pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  //  Logged in → block public pages
+  
   if (token && isPublic) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
