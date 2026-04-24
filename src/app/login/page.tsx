@@ -50,63 +50,73 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-amber-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-amber-200">
+  <div className="min-h-screen flex items-center justify-center bg-[#f5f1eb] px-4">
+    
+    <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-10 border border-[#e5dccf]">
 
-        <h2 className="text-3xl font-semibold text-center text-amber-800 mb-2">
-          Welcome Back
-        </h2>
+      {/* Title */}
+      <h2 className="text-3xl font-semibold text-center text-[#5c4b3a]">
+        Welcome Back
+      </h2>
 
-        <p className="text-center text-stone-600 text-sm mb-6">
-          Login to continue
-        </p>
+      <p className="text-center text-[#9c8b7a] text-sm mt-1 mb-6">
+        Login to continue
+      </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
-          {/* Email */}
-          <div>
-            <input
-              {...register("email")}
-              placeholder="Email"
-              className="w-full px-4 py-3 border rounded-lg"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
+        {/* Email */}
+        <div>
+          <label className="block text-sm text-[#7a6a58] mb-1">
+            Email
+          </label>
+          <input
+            {...register("email")}
+            placeholder="Enter your email"
+            className="w-full px-4 py-3 rounded-xl border border-[#e5dccf] bg-[#faf7f3] text-[#5c4b3a] focus:outline-none focus:ring-2 focus:ring-[#cbbba0] transition"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
 
-          {/* Password */}
-          <div>
-            <input
-              {...register("password")}
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-3 border rounded-lg"
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+        {/* Password */}
+        <div>
+          <label className="block text-sm text-[#7a6a58] mb-1">
+            Password
+          </label>
+          <input
+            {...register("password")}
+            type="password"
+            placeholder="Enter your password"
+            className="w-full px-4 py-3 rounded-xl border border-[#e5dccf] bg-[#faf7f3] text-[#5c4b3a] focus:outline-none focus:ring-2 focus:ring-[#cbbba0] transition"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
 
-          <button className="w-full py-3 bg-amber-700 text-white rounded-lg">
-            Login
-          </button>
-        </form>
+        {/* Button */}
+        <button className="w-full py-3 bg-[#5c4b3a] text-white rounded-xl font-medium hover:bg-[#4a3d30] transition duration-200 shadow-sm">
+          Login
+        </button>
+      </form>
 
-        <p className="text-sm text-center text-stone-600 mt-6">
-          Don’t have an account?{" "}
-          <span
-            onClick={() => router.push("/register")}
-            className="text-amber-700 cursor-pointer hover:underline"
-          >
-            Register
-          </span>
-        </p>
-      </div>
+      {/* Footer */}
+      <p className="text-sm text-center text-[#8c7a66] mt-6">
+        Don’t have an account?{" "}
+        <span
+          onClick={() => router.push("/register")}
+          className="text-[#5c4b3a] cursor-pointer hover:underline font-medium"
+        >
+          Register
+        </span>
+      </p>
     </div>
-  );
+  </div>
+);
 }
