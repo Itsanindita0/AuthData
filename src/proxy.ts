@@ -5,18 +5,24 @@ export function proxy(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 
-  //  Public routes
-  const publicRoutes = ["/", "/login", "/register"];
+  const isPublic =
+    pathname === "/" ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/register");
 
-  //  If NOT logged in → block dashboard
+  //  Not logged in → block dashboard
   if (!token && pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  //  If logged in → block public pages
-  if (token && publicRoutes.includes(pathname)) {
+  //  Logged in → block public pages
+  if (token && isPublic) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/", "/dashboard/:path*", "/login/:path*", "/register/:path*"],
+};
