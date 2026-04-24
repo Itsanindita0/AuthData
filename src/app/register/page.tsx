@@ -5,114 +5,162 @@ import { registerUser } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RegisterBody } from "@/types/auth";
+import toast from "react-hot-toast";
 
 export default function Register() {
-  const { register, handleSubmit } = useForm<RegisterBody>();
+  const { register, handleSubmit, getValues } = useForm<RegisterBody>();
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(1); //  step control
 
   const onSubmit = async (data: RegisterBody) => {
     setLoading(true);
+
     try {
-      console.log(data);
       const res = await registerUser(data);
-      if (res) router.push("/login");
-    } catch (err) {
-      console.error(err);
-      alert("Registration failed. Please try again.");
+
+      if (res) {
+        toast.success("Registered successfully ✅");
+
+        setTimeout(() => {
+          router.push("/login");
+        }, 1500);
+      }
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "";
+
+      if (message.toLowerCase().includes("already")) {
+        toast.error("Email already registered");
+      } else {
+        toast.error("Registration failed");
+      }
     }
+
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 px-4">
-      
-      <div className="w-full max-w-lg bg-white/80 backdrop-blur-md shadow-2xl rounded-3xl p-8 space-y-6 border border-pink-100">
+    <div className="min-h-screen flex items-center justify-center bg-amber-100 px-4">
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-8 space-y-6 border border-amber-200">
         
-        {/* Title */}
-        <h2 className="text-3xl font-bold text-center text-pink-600">
-          Create Account 💖
+        <h2 className="text-3xl font-semibold text-center text-amber-800">
+          Create Account
         </h2>
 
-        {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          
-          {/* User Info */}
-          <input
-            {...register("name")}
-            placeholder="👩 Full Name"
-            className="w-full px-4 py-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-400 text-gray-700 bg-pink-50 placeholder:text-pink-300"
-          />
 
-          <input
-            {...register("email")}
-            placeholder="💌 Email"
-            className="w-full px-4 py-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-400 text-gray-700 bg-pink-50 placeholder:text-pink-300"
-          />
+          {/* USER DETAILS */}
+          {step === 1 && (
+            <>
+              <input
+                {...register("name")}
+                placeholder="Full Name"
+                className="w-full px-4 py-3 border border-amber-300 rounded-lg text-black"
+              />
 
-          <input
-            {...register("password")}
-            type="password"
-            placeholder="🔒 Password"
-            className="w-full px-4 py-3 border border-pink-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-400 text-gray-700 bg-pink-50 placeholder:text-pink-300"
-          />
+              <input
+                {...register("email")}
+                placeholder="Email"
+                className="w-full px-4 py-3 border border-amber-300 rounded-lg text-black"
+              />
 
-          {/* Divider */}
-          <div className="text-sm text-pink-500 pt-2 text-center font-medium">
-            ✨ Organization Details ✨
-          </div>
+              <input
+                {...register("password")}
+                type="password"
+                placeholder="Password"
+                className="w-full px-4 py-3 border border-amber-300 rounded-lg text-black"
+              />
 
-          {/* Org Info */}
-          <input
-            {...register("orgDetails.name")}
-            placeholder="🏢 Organization Name"
-            className="w-full px-4 py-3 border border-purple-200 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 text-gray-700 bg-purple-50 placeholder:text-purple-300"
-          />
+              {/* Next Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  const { name, email, password } = getValues();
 
-          <input
-            {...register("orgDetails.legalName")}
-            placeholder="📄 Legal Name"
-            className="w-full px-4 py-3 border border-purple-200 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 text-gray-700 bg-purple-50 placeholder:text-purple-300"
-          />
+                  // simple validation
+                  if (!name || !email || !password) {
+                    toast.error("Please fill all fields");
+                    return;
+                  }
 
-          <input
-            {...register("orgDetails.contactInfo.email")}
-            placeholder="📧 Org Email"
-            className="w-full px-4 py-3 border border-purple-200 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 text-gray-700 bg-purple-50 placeholder:text-purple-300"
-          />
+                  setStep(2);
+                }}
+                className="w-full py-3 bg-amber-700 text-white rounded-lg"
+              >
+                Next
+              </button>
+            </>
+          )}
 
-          <input
-            {...register("orgDetails.contactInfo.phone")}
-            placeholder="📱 Phone Number"
-            className="w-full px-4 py-3 border border-purple-200 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400 text-gray-700 bg-purple-50 placeholder:text-purple-300"
-          />
+          {/*  ORG DETAILS */}
+          {step === 2 && (
+            <>
+              <div className="text-sm text-amber-700 text-center font-medium">
+                Organization Details
+              </div>
 
-          {/* Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full font-semibold shadow-md hover:scale-105 hover:shadow-lg transition duration-300 disabled:opacity-50"
-          >
-            {loading ? "Creating Account..." : "💖 Register"}
-          </button>
+              <input
+                {...register("orgDetails.name")}
+                placeholder="Organization Name"
+                className="w-full px-4 py-3 border border-stone-300 rounded-lg text-black"
+              />
+
+              <input
+                {...register("orgDetails.legalName")}
+                placeholder="Legal Name"
+                className="w-full px-4 py-3 border border-stone-300 rounded-lg text-black"
+              />
+
+              <input
+                {...register("orgDetails.contactInfo.email")}
+                placeholder="Organization Email"
+                className="w-full px-4 py-3 border border-stone-300 rounded-lg text-black"
+              />
+
+              <input
+                {...register("orgDetails.contactInfo.phone")}
+                placeholder="Phone Number"
+                className="w-full px-4 py-3 border border-stone-300 rounded-lg text-black"
+              />
+
+              {/* Buttons */}
+              <div className="flex gap-3">
+                
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="w-1/2 py-3 bg-green-950 rounded-lg"
+                >
+                  Back
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-1/2 py-3 bg-amber-700 text-white rounded-lg"
+                >
+                  {loading ? "Submitting..." : "Register"}
+                </button>
+
+              </div>
+            </>
+          )}
         </form>
 
         {/* Footer */}
-        <p className="text-sm text-center text-gray-500">
+        <p className="text-sm text-center text-stone-600">
           Already have an account?{" "}
           <span
-            className="text-pink-600 cursor-pointer hover:underline font-medium"
             onClick={() => router.push("/login")}
+            className="text-amber-700 cursor-pointer hover:underline"
           >
-            Login ✨
+            Login
           </span>
         </p>
-
-        {/* Cute Footer */}
-        <p className="text-xs text-center text-gray-400">
-          Made with 💗
-        </p>
-
       </div>
     </div>
   );

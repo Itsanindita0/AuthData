@@ -6,43 +6,39 @@ const Page = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-100 via-stone-200 to-amber-200 px-4">
       
-      
-      <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-10 text-center max-w-md w-full border border-pink-100">
+      <div className="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl p-10 text-center max-w-md w-full border border-amber-200">
         
-        {/* Cute Title */}
-        <h1 className="text-3xl font-bold text-pink-600 mb-2">
-          Welcome 💖
+        {/* Title */}
+        <h1 className="text-3xl font-bold text-amber-800 mb-2">
+          Welcome
         </h1>
-        <p className="text-gray-600 mb-6 text-sm">
-          Let’s get you started ✨
+        <p className="text-stone-600 mb-6 text-sm">
+          Let’s get you started
         </p>
-        
 
         {/* Buttons */}
         <div className="space-y-4">
           
           <button
             onClick={() => router.push("/login")}
-            className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full font-medium shadow-md hover:scale-105 hover:shadow-lg transition duration-300"
+            className="w-full py-3 bg-amber-950 text-white rounded-full font-medium shadow-md hover:scale-105 hover:shadow-lg transition duration-300"
           >
-            💕 Login Here
+            Login Here
           </button>
 
           <button
             onClick={() => router.push("/register")}
-            className="w-full py-3 bg-pink-100 text-pink-600 rounded-full font-medium hover:bg-pink-200 transition duration-300"
+            className="w-full py-3 bg-amber-100 text-amber-800 rounded-full font-medium hover:bg-amber-200 transition duration-300"
           >
-            ✨ Register Here
+            Register Here
           </button>
 
         </div>
 
-        {/* Cute Footer */}
-        <p className="text-xs text-gray-400 mt-6">
-          Made with 💗
-        </p>
+        {/* Footer */}
+        
 
       </div>
       

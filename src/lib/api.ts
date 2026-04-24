@@ -1,20 +1,23 @@
 import { LoginBody, RegisterBody,ApiResponse } from "@/types/auth";
 
 
-export const registerUser = async (data: RegisterBody) => {
-    console.log(data);
-    
+export const registerUser = async (data: any) => {
   const res = await fetch("/api/auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(
-      data
-    ),
+    body: JSON.stringify(data),
   });
 
-  return res.json();
+  const result = await res.json();
+
+  
+  if (!res.ok) {
+    throw new Error(result.message || "Something went wrong");
+  }
+
+  return result;
 };
 
 export const loginUser = async (data: LoginBody) => {
